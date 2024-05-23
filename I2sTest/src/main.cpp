@@ -8,19 +8,20 @@ i2s_port_t i2s_out = I2S_NUM_1; // i2s port number
 
 static const i2s_config_t i2s_config_in = {
      .mode = i2s_mode_t(I2S_MODE_SLAVE | I2S_MODE_RX),
-     .sample_rate = 44100 ,
-     .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
+     .sample_rate = 48000 ,
+     .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
      .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
      .communication_format = I2S_COMM_FORMAT_STAND_I2S,
      .intr_alloc_flags = 0, // default interrupt priority
      .dma_buf_count = 8,
-     .dma_buf_len = 64,
-     .use_apll = false
+     .dma_buf_len = 1024,
+     .use_apll = false,
+     .tx_desc_auto_clear = false
 };
 
 static const i2s_config_t i2s_config_out = {
      .mode = i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_TX), //i2s_mode_t(I2S_MODE_MASTER | I2S_MODE_TX),
-     .sample_rate = 44100,
+     .sample_rate = 48000,
      .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
      .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
      .communication_format = I2S_COMM_FORMAT_STAND_I2S, //i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S | I2S_COMM_FORMAT_STAND_MSB),
@@ -48,17 +49,16 @@ static const i2s_pin_config_t pin_config2 = {
 
 void setup() {
   
-  //i2s_driver_install(i2s_in, &i2s_config_in, 0, NULL);   //install and start i2s driver
-  int32_t i;
+  i2s_driver_install(i2s_in, &i2s_config_in, 0, NULL);   //install and start i2s driver
   i2s_driver_install(i2s_out, &i2s_config_out, 0, NULL);   //install and start i2s driver
 
-  //i2s_set_pin(i2s_in, &pin_config);
+  i2s_set_pin(i2s_in, &pin_config);
   i2s_set_pin(i2s_out, &pin_config2);
-  Serial.begin(115200);
+  //Serial.begin(115200);
 }
 
-#define type 0
-const int expon = 30;
+#define type 1
+const int expon = 27;
 const double f = 1000; 
 TickType_t ticks = 0;
 
