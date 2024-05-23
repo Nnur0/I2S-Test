@@ -24,11 +24,11 @@ static const i2s_config_t i2s_config_out = {
      .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
      .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,
      .communication_format = I2S_COMM_FORMAT_STAND_I2S, //i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S | I2S_COMM_FORMAT_STAND_MSB),
-     .intr_alloc_flags = 0, // default interrupt priority
-     .dma_buf_count = 2,
-     .dma_buf_len = 64,
-     .use_apll = true,
-     .tx_desc_auto_clear = true
+     .intr_alloc_flags = 1, // default interrupt priority
+     .dma_buf_count = 8,
+     .dma_buf_len = 1024,
+     .use_apll = false,
+     .tx_desc_auto_clear = false
 };
 
 static const i2s_pin_config_t pin_config = {
@@ -57,10 +57,10 @@ void setup() {
   Serial.begin(115200);
 }
 
-#define type 2
-const int expon = 20;
-const double f = 0.5; 
-TickType_t ticks = 100;
+#define type 0
+const int expon = 30;
+const double f = 1000; 
+TickType_t ticks = 0;
 
 size_t num;
 const int32_t amplitude = pow(2, expon); 
@@ -95,8 +95,8 @@ void loop() {
   }
   
   i2s_write(i2s_out, &sample, sizeof(sample), &num, ticks);
-  sample *=-1; 
-  i2s_write(i2s_out, &sample, sizeof(sample), &num, ticks);
-
-  Serial.println(sample);
+  //sample *=-1; 
+  //i2s_write(i2s_out, &sample, sizeof(sample), &num, ticks);
+  //sample *=-1; 
+  //Serial.println(sample);
  }
